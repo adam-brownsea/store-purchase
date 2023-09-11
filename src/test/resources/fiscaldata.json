@@ -1,0 +1,51 @@
+{
+  "data": [
+      {
+          "country_currency_desc": "Australia-Dollar",
+          "exchange_rate": "1.336",
+          "record_date": "2022-03-31"
+      },
+      {
+          "country_currency_desc": "Australia-Dollar",
+          "exchange_rate": "1.453",
+          "record_date": "2022-06-30"
+      },
+      {
+          "country_currency_desc": "Australia-Dollar",
+          "exchange_rate": "1.391",
+          "record_date": "2021-09-30"
+      },
+      {
+          "country_currency_desc": "Australia-Dollar",
+          "exchange_rate": "1.375",
+          "record_date": "2021-12-31"
+      }
+  ],
+  "meta": {
+      "count": 4,
+      "labels": {
+          "country_currency_desc": "Country - Currency Description",
+          "exchange_rate": "Exchange Rate",
+          "record_date": "Record Date"
+      },
+      "dataTypes": {
+          "country_currency_desc": "STRING",
+          "exchange_rate": "NUMBER",
+          "record_date": "DATE"
+      },
+      "dataFormats": {
+          "country_currency_desc": "String",
+          "exchange_rate": "10.2",
+          "record_date": "YYYY-MM-DD"
+      },
+      "total-count": 4,
+      "total-pages": 1
+  },
+  "links": {
+      "self": "&page%5Bnumber%5D=1&page%5Bsize%5D=100",
+      "first": "&page%5Bnumber%5D=1&page%5Bsize%5D=100",
+      "prev": null,
+      "next": null,
+      "last": "&page%5Bnumber%5D=1&page%5Bsize%5D=100"
+  }
+}

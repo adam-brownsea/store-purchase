@@ -1,0 +1,6 @@
+{
+  "id": 1,
+  "transaction_date": "2022-12-31",
+  "description": "My test transaction",
+  "usd_amount": "123.34"
+}

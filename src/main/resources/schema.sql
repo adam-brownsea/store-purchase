@@ -1,0 +1,1 @@
+ CREATE TABLE IF NOT EXISTS transaction ( id bigint NOT NULL UNIQUE, transaction_date datetime NOT NULL, description varchar(50), usd_amount decimal(10,2), PRIMARY KEY (id))

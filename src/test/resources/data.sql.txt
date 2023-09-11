@@ -1,0 +1,6 @@
+INSERT INTO transaction (id, transaction_date, description, usd_amount) VALUES (1, 01-01-2023, "test 1", 123.00f);
+INSERT INTO transaction (id, transaction_date, description, usd_amount) VALUES (2, 01-01-2023, "test 2", 456.00f);
+INSERT INTO transaction (id, transaction_date, description, usd_amount) VALUES (3, 01-01-2023, "test 3", 789.00f);
+INSERT INTO transaction (id, transaction_date, description, usd_amount) VALUES (4, 01-01-2023, "test 4", 987.00f);
+INSERT INTO transaction (id, transaction_date, description, usd_amount) VALUES (5, 01-01-2023, "test 5", 654.00f);
+INSERT INTO transaction (id, transaction_date, description, usd_amount) VALUES (6, 01-01-2023, "test 6", 321.00f);

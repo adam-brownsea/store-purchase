@@ -1,0 +1,61 @@
+plugins {
+	id 'java'
+	id 'groovy'
+	id 'org.springframework.boot' version '3.1.3'
+	id 'io.spring.dependency-management' version '1.1.3'
+}
+
+group = 'au.bzea'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.18'
+    testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
+}
+
+//application {
+//	mainClass = 'au.bzea.storepurchase.StorePurchaseApplication'
+//}
+
+
+sourceSets {
+	main { 
+		java { srcDirs = ['src/main']	}
+	}
+	test {
+		groovy { srcDirs = ['src/test/groovy'] }
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+
+
