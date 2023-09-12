@@ -9,7 +9,7 @@ import lombok.Setter;
 
 //@Entity
 @Getter @Setter @NoArgsConstructor
-public class Fiscal {
+public class FiscalDataset {
     private List<CurrencyRate> data;
     private FiscalMeta meta;
     private FiscalLinks links;

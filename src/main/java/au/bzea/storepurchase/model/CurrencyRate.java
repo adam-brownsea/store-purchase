@@ -1,5 +1,8 @@
 package au.bzea.storepurchase.model;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -11,8 +14,21 @@ public class CurrencyRate {
 
     @JsonProperty("country_currency_desc")
     private String countryCurrencyDesc;
+
     @JsonProperty("exchange_rate")
     private String exchangeRate;
-    @JsonProperty("record_date")
-    private String recordDate;
+    
+    @JsonProperty("effective_date")
+    private String effectiveDate;
+
+    public CurrencyRate(String countryCurrencyDesc, String exchangeRate, String effectiveDate) {
+        this.countryCurrencyDesc = countryCurrencyDesc;
+        this.exchangeRate = exchangeRate;
+        this.effectiveDate = effectiveDate;
+    }
+
+    @Override
+	public String toString() {
+		return "countryCurrencyDesc=" + countryCurrencyDesc + ", exchangeRate=" + exchangeRate + ", effectiveDate=" + effectiveDate;
+	}
 }

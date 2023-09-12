@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -19,6 +21,7 @@ public class Transaction {
     
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "transaction_date", nullable = false)
@@ -39,9 +42,7 @@ public class Transaction {
     @Transient
     private BigDecimal exchangeRate; 
 
-    public Transaction(Long id, Date transactionDate, String description, 
-        BigDecimal usdAmount) {
-        this.id = id;
+    public Transaction(Date transactionDate, String description, BigDecimal usdAmount) {
         this.transactionDate = transactionDate;
         this.description = description;
         this.usdAmount = usdAmount;

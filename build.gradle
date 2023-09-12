@@ -31,23 +31,8 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.18'
     testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
-}
-
-//application {
-//	mainClass = 'au.bzea.storepurchase.StorePurchaseApplication'
-//}
-
-
-sourceSets {
-	main { 
-		java { srcDirs = ['src/main']	}
-	}
-	test {
-		groovy { srcDirs = ['src/test/groovy'] }
-	}
 }
 
 tasks.named('test') {
@@ -56,6 +41,3 @@ tasks.named('test') {
         events "passed", "skipped", "failed"
     }
 }
-
-
-

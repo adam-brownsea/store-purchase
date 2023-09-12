@@ -80,7 +80,6 @@ public class StorePurchaseController {
             System.out.println(transaction.getUsdAmount());
 			Transaction _transaction = transactionRepository
 					.save(new Transaction(
-                        transaction.getId(), 
                         transaction.getTransactionDate(), 
                         transaction.getDescription(), 
                         transaction.getUsdAmount()));
