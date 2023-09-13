@@ -8,31 +8,31 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.Column;
 
-@Entity
-@Table(name = "transaction")
 @Getter @Setter @NoArgsConstructor
-public class Transaction {
+public class ResponseTransaction {
     
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "transaction_date", nullable = false)
     private Date transactionDate;
 
-    @Column(name = "description", length = 50)
     private String description;
 
-    @Column(name = "usd_amount", precision = 10, scale = 2, nullable = false)
     private BigDecimal usdAmount;
 
-    public Transaction(Date transactionDate, String description, BigDecimal usdAmount) {
+    private String currency;
+
+    private BigDecimal amount; 
+
+    private BigDecimal exchangeRate; 
+
+    public ResponseTransaction(Long id, Date transactionDate, String description, BigDecimal usdAmount) {
+        this.id = id;
         this.transactionDate = transactionDate;
         this.description = description;
         this.usdAmount = usdAmount;
@@ -40,6 +40,6 @@ public class Transaction {
 
     @Override
 	public String toString() {
-		return "Transaction [id=" + id + ", date=" + transactionDate.toString() + ", desc=" + description + ", Amount=" + usdAmount + "]";
+		return "ResponseTransaction [id=" + id + ", date=" + transactionDate.toString() + ", desc=" + description + ", Amount=" + usdAmount + "]";
 	}
 }

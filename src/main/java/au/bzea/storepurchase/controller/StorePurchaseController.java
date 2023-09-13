@@ -11,12 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import au.bzea.storepurchase.model.Transaction;
+import au.bzea.storepurchase.exceptions.ResponseEntityBuilder;
+import au.bzea.storepurchase.exceptions.RestError;
+import au.bzea.storepurchase.model.RequestTransaction;
 import au.bzea.storepurchase.repository.TransactionRepository;
 import au.bzea.storepurchase.service.Currencies;
+import au.bzea.storepurchase.service.RequestValidation;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -75,14 +82,28 @@ public class StorePurchaseController {
     }
 
     @PostMapping("/transactions")
-	public ResponseEntity<Transaction> createTutorial(@RequestBody Transaction transaction) {
+	public ResponseEntity<?> CreateTransaction(@RequestBody RequestTransaction request) {
+
+        List<String> errors = RequestValidation.validate(request);
+        if (errors.size() > 0) {
+
+            RestError restError = new RestError();
+            restError.setMessage("Input validation errors");
+            restError.setErrors(errors);
+            restError.setStatus(HttpStatus.BAD_REQUEST);
+            return ResponseEntityBuilder.build(restError);
+        }
+
 		try {
-            System.out.println(transaction.getUsdAmount());
+            System.out.println(request.getUsdAmount());
+            Date transactionDate = Date.valueOf(request.getTransactionDate());  
+            String description = request.getDescription();
+            BigDecimal usdAmount = new BigDecimal(request.getUsdAmount());
+
 			Transaction _transaction = transactionRepository
-					.save(new Transaction(
-                        transaction.getTransactionDate(), 
-                        transaction.getDescription(), 
-                        transaction.getUsdAmount()));
+					.save(new Transaction(transactionDate, 
+                        description, 
+                        usdAmount));
             System.out.println(_transaction.toString());
 			return new ResponseEntity<>(_transaction, HttpStatus.CREATED);
 		} catch (Exception e) {
