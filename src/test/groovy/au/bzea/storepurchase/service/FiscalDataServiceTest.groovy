@@ -8,6 +8,8 @@ import java.time.LocalDate
 
 class FiscalDataServiceTest extends Specification {
 
+    def fiscalDataService = new FiscalDataService()
+   
     //======
     // getRate method
     //======
@@ -18,7 +20,7 @@ class FiscalDataServiceTest extends Specification {
         def tranDate = LocalDate.parse("2023-05-01", "yyyy-MM-dd")
         
         when: "we request a conversion rate"
-        def exchangeRate = FiscalDataService.getRate(currency, tranDate);
+        def exchangeRate = fiscalDataService.getRate(currency, tranDate);
 
         then: "we receive a successful value"
         println(exchangeRate)
@@ -32,7 +34,7 @@ class FiscalDataServiceTest extends Specification {
         def tranDate = LocalDate.parse("1973-05-01", "yyyy-MM-dd")
 
         when: "we request a conversion rate"
-        def exchangeRate = FiscalDataService.getRate(currency, tranDate);
+        def exchangeRate = fiscalDataService.getRate(currency, tranDate);
         println(exchangeRate)
 
         then: "we recieve a exchange rate not found error"
@@ -47,6 +49,7 @@ class FiscalDataServiceTest extends Specification {
         def tranDate = LocalDate.parse("1973-05-01", "yyyy-MM-dd")
 
         when: "we request a conversion rate"
+        def exchangeRate = fiscalDataService.getRate(currency, tranDate);
 
         then: "we recieve a exchange rate not found error"
         false
@@ -61,7 +64,7 @@ class FiscalDataServiceTest extends Specification {
         def tranDate = LocalDate.now()
 
         when: "we request a date range"
-        def dates = FiscalDataService.getDateRange(tranDate);
+        def dates = fiscalDataService.getDateRange(tranDate);
         println(tranDate)
         println(dates[1])
         
@@ -78,7 +81,7 @@ class FiscalDataServiceTest extends Specification {
         def currDate = LocalDate.now()
 
         when: "we request a conversion rate"
-        def dates = FiscalDataService.getDateRange(tranDate);
+        def dates = fiscalDataService.getDateRange(tranDate);
         
         then: "we receive expected date ranges"
         currDate.minusMonths(6) == dates[0]
@@ -91,7 +94,7 @@ class FiscalDataServiceTest extends Specification {
         def tranDate = LocalDate.now().minusMonths(4)
 
         when: "we request a conversion rate"
-        def dates = FiscalDataService.getDateRange(tranDate);
+        def dates = fiscalDataService.getDateRange(tranDate);
 
         then: "we receive expected date ranges"
         tranDate.minusMonths(3) == dates[0]
@@ -113,7 +116,7 @@ class FiscalDataServiceTest extends Specification {
         def tranDate = LocalDate.parse("2023-04-01", "yyyy-MM-dd")
 
         when: "we request a conversion rate"
-        def result = FiscalDataService.findCurrencyRate(currencyRates, tranDate)
+        def result = fiscalDataService.findCurrencyRate(currencyRates, tranDate)
         def effectiveDate = LocalDate.parse(result.getEffectiveDate(), "yyyy-MM-dd")
 
         then: "we receive 1 currency rate"

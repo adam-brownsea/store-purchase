@@ -2,12 +2,12 @@ package au.bzea.storepurchase.exceptions;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseEntityBuilder {
     
     public static ResponseEntity<Object> build(RestError restError) {
-        restError.setTimestamp(LocalDateTime.now());
-        return new ResponseEntity<>(restError, restError.getStatus());
+        return new ResponseEntity<>(restError, restError.getStatus() == null? HttpStatus.INTERNAL_SERVER_ERROR : restError.getStatus());
     }
 }

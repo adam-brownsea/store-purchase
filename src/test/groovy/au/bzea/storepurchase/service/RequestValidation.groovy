@@ -7,19 +7,12 @@ import static groovy.json.JsonOutput.toJson
 
 class RequestValidationTest extends Specification {
 
-/*
-    Map request = [
-            transactionDate : "2022-12-31",
-            description : "My test transaction post with 51 characters length.",
-            usdAmount : "123.34"
-        ]
-*/
     def "all valid so no errors returned"() {
         given: "we have request with valid data"
         def request = new RequestTransaction("2022-12-31", "My test transaction.","123.34")
 
         when: "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we are returned no error values"
         errors.size() == 0
@@ -29,7 +22,7 @@ class RequestValidationTest extends Specification {
         given: "we have an empty request"
         def request = null
         when: "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
         then: "we receive an error of empty request "
         errors.size() == 1
         errors[0] == "Empty request"
@@ -40,7 +33,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction(null, "My test transaction.","123.34")
 
         when: "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -53,7 +46,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2022-12-32", "My test transaction.","123.34")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -66,7 +59,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2023-12-31", "My test transaction.","123.34")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -79,7 +72,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2022-12-31", "My test transaction post with 51 characters length.","123.34")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -92,7 +85,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2022-12-31", "My test transaction.", null)
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -105,7 +98,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2022-12-31", "My test transaction.", "ABC")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -117,7 +110,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2022-12-31", "My test transaction.", "123.456")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a single error"
         errors.size() == 1
@@ -130,7 +123,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2022-12-31", "My test transaction post with 51 characters length.","123.347")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a two errors"
         errors.size() == 2
@@ -143,7 +136,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction("2023-12-32", "My test transaction post with 51 characters length.","123.347")
 
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive a two errors"
         errors.size() == 3
@@ -156,7 +149,7 @@ class RequestValidationTest extends Specification {
         def request = new RequestTransaction()
     
         when:  "we validate the request"
-        def errors = RequestValidation.validate(request)
+        def errors = RequestValidation.validatePostRequest(request)
 
         then: "we receive 2 errors for is required"
         errors.size() == 2

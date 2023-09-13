@@ -3,22 +3,24 @@ package au.bzea.storepurchase.service;
 import au.bzea.storepurchase.model.FiscalDataset;
 import au.bzea.storepurchase.model.CurrencyRate;
 
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.io.IOException;
 import java.math.BigDecimal;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Service
 public class FiscalDataService {
     private static Logger logger = Logger.getLogger(FiscalDataService.class.getName());
 
@@ -26,12 +28,13 @@ public class FiscalDataService {
 
     private static final int HALF_RANGE = 3;
 
-    public static BigDecimal getRate(String currency, LocalDate transactionDate) {
+    public BigDecimal getRate(String currency, LocalDate transactionDate) {
         
         // Get the date range to search
         LocalDate[] dateRange = getDateRange(transactionDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        currency = Helper.encodeString(currency);
         String url = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange";
         String fields = "?fields=country_currency_desc,exchange_rate,effective_date";
         String filter = "&filter=country_currency_desc:eq:" + currency 
@@ -40,8 +43,10 @@ public class FiscalDataService {
 
         logger.info("Fields: "+ fields);
         logger.info("Filter: "+ filter);
+        String uri = url + fields + filter;
+        logger.info("Uri: "+ uri);
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(url + fields + filter))
+				.uri(URI.create(uri))
 				.method("GET", HttpRequest.BodyPublishers.noBody())
 				.build();
         HttpResponse<String> response = null;
@@ -56,7 +61,7 @@ public class FiscalDataService {
             return new BigDecimal(0);
 		}
 
-		//System.out.println(response.body());
+		logger.info(response.body());
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             FiscalDataset fiscal = objectMapper.readValue(response.body(), FiscalDataset.class);        

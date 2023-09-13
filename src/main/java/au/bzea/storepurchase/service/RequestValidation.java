@@ -3,6 +3,7 @@ package au.bzea.storepurchase.service;
 import au.bzea.storepurchase.model.RequestTransaction;
 import java.util.List;
 import java.util.logging.Logger;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class RequestValidation {
     private static Logger logger = Logger.getLogger(RequestValidation.class.getName());
 
-    public static List<String> validate(RequestTransaction request) {
+    public static List<String> validatePostRequest(RequestTransaction request) {
         List<String> errors = new ArrayList<String>();
 
         // Can't check if transaction empty as has required fields
@@ -70,5 +71,14 @@ public class RequestValidation {
         }
         
         return errors;
+    }
+
+    public static boolean validateCurrency(String countryCurrency) {
+        try{
+            List<String> currencies = Currencies.getCurrencies();
+            return currencies.contains(countryCurrency);
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
