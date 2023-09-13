@@ -53,19 +53,20 @@ public class RequestValidation {
             // check USD amount  is provided
             logger.warning("date not provided");
             errors.add("USD amount is not provided");
-        }
-        String amount = request.getUsdAmount();
-        try {
-            BigDecimal usdAmount = new BigDecimal(amount);
-            logger.info("is amount: " + usdAmount.toString());
-            if (amount.contains(".") 
-                && amount.substring(amount.indexOf(".") + 1).length() > 2) {
-                logger.warning("too many decimals");
-                errors.add("USD Amount has more than 2 decimals");        
+        } else {
+            String amount = request.getUsdAmount();
+            try {
+                BigDecimal usdAmount = new BigDecimal(amount);
+                logger.info("is amount: " + usdAmount.toString());
+                if (amount.contains(".") 
+                    && amount.substring(amount.indexOf(".") + 1).length() > 2) {
+                    logger.warning("too many decimals");
+                    errors.add("USD Amount has more than 2 decimals");        
+                }
+            } catch (Exception e) {
+                logger.warning("invalid decimal");
+                errors.add("USD Amount is not dollar amount");
             }
-        } catch (Exception e) {
-            logger.warning("invalid decimal");
-            errors.add("USD Amount is not dollar amount");
         }
         
         return errors;

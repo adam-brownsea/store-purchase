@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import java.util.List;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -35,24 +34,11 @@ public class StorePurchaseController {
     @Autowired
     TransactionRepository transactionRepository;
 
-    @GetMapping("/currencies")
-    public static String testCurrencies() {
-        try {
-            List<String> cc = Currencies.getCurrencies();
-            return cc.toString();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage());
-            return e.getMessage();
-        }
-        
-    }
-    
     @GetMapping("/transactions/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable("id") Long id) {
-        System.out.println(id);
+        logger.info("Start getTransactionById: " + id);
         try {
             Optional<Transaction> transaction = transactionRepository.findById(id);
-            System.out.println("Present: " + transaction.isPresent());
             logger.info("Present: " + transaction.isPresent());
                 return transaction.isPresent() ? new ResponseEntity<>(transaction.get(), HttpStatus.OK) 
             : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -66,23 +52,21 @@ public class StorePurchaseController {
 
     @GetMapping("/transactions")
     public ResponseEntity<List<Transaction>> getAllTransactions() {
+        logger.info("Start getAllTransactions");
         try {
-
             List<Transaction> transactions = new ArrayList<Transaction>();
             transactionRepository.findAll().forEach(transactions::add);
 
-            System.out.println("test");
             return new ResponseEntity<>(transactions, HttpStatus.OK);
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        //return "";
     }
 
     @PostMapping("/transactions")
 	public ResponseEntity<?> CreateTransaction(@RequestBody RequestTransaction request) {
+        logger.info("Start CreateTransaction");
 
         List<String> errors = RequestValidation.validate(request);
         if (errors.size() > 0) {
