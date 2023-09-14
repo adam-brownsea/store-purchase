@@ -56,52 +56,6 @@ class FiscalDataServiceTest extends Specification {
         exchangeRate == 0
     }
 
-
-    //======
-    // getDateRange method
-    //======
-    def "tran date is today, returns date from today and 6 months ago"() {
-        given: "we set trnsaction date to today"
-        def tranDate = LocalDate.now()
-
-        when: "we request a date range"
-        def dates = fiscalDataService.getDateRange(tranDate);
-        println(tranDate)
-        println(dates[1])
-        
-        then: "we receive expected date ranges"
-        tranDate.minusMonths(6) == dates[0]
-        tranDate == dates[1]
-
-    }
-    
-    def "tran date 1 month ago, returns date from today and 6 months ago"() {
-        given: "we set trnsaction date to 1 month ago"
-        def pattern = "yyyy-MM-dd"
-        def tranDate = LocalDate.now().minusMonths(1)
-        def currDate = LocalDate.now()
-
-        when: "we request a conversion rate"
-        def dates = fiscalDataService.getDateRange(tranDate);
-        
-        then: "we receive expected date ranges"
-        currDate.minusMonths(6) == dates[0]
-        currDate == dates[1]
-    }
-
-    def "tran date 4 month ago, returns 3 months each from date"() {
-        given: "we set trnsaction date to 4 months ago"
-        def pattern = "yyyy-MM-dd"
-        def tranDate = LocalDate.now().minusMonths(4)
-
-        when: "we request a conversion rate"
-        def dates = fiscalDataService.getDateRange(tranDate);
-
-        then: "we receive expected date ranges"
-        tranDate.minusMonths(3) == dates[0]
-        tranDate.plusMonths(3) == dates[1]
-    }
-
     //======
     // findCurrencyRate method
     //======

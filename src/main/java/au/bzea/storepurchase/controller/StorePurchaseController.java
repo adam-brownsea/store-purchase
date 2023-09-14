@@ -61,7 +61,7 @@ public class StorePurchaseController {
             TransactionService tranService = new TransactionService(transactionRepository);
             Transaction transaction = tranService.retrieve(id);
             if (transaction == null) {
-                RestError restError = new RestError(HttpStatus.BAD_REQUEST, "Not Found!");
+                RestError restError = new RestError(HttpStatus.BAD_REQUEST, "Transaction not found!");
                 return ResponseEntityBuilder.build(restError);
             }
 
@@ -88,6 +88,13 @@ public class StorePurchaseController {
                     // Get rate
                     BigDecimal rate = fiscalDataService.getRate(countryCurrency, transactionDate);
                         response.setExchangeRate(rate);
+                    // if rate is zero, not rate found so return error.
+                    logger.info("Rate: " + rate);
+                    if (rate.equals(new BigDecimal(0))) {
+                        RestError restError = new RestError(HttpStatus.BAD_REQUEST, "Rate not found for transaction date!");
+                        return ResponseEntityBuilder.build(restError);
+            }
+
 
                     // Calculate result and round
                     BigDecimal amount = rate.multiply(transaction.getUsdAmount());

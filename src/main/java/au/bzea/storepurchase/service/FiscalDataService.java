@@ -22,22 +22,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class FiscalDataService {
     private static Logger logger = Logger.getLogger(FiscalDataService.class.getName());
 
-    private static final int FULL_RANGE = 6;
-
-    private static final int HALF_RANGE = 3;
+    private static final int MINUS_MONTHS = 6;
 
     public BigDecimal getRate(String currency, LocalDate transactionDate) {
         
         // Get the date range to search
-        LocalDate[] dateRange = getDateRange(transactionDate);
+        LocalDate fromDate = transactionDate.minusMonths(MINUS_MONTHS);;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         currency = Helper.encodeString(currency);
         String url = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange";
         String fields = "?fields=country_currency_desc,exchange_rate,effective_date";
         String filter = "&filter=country_currency_desc:eq:" + currency 
-            + ",effective_date:gte:" + dateRange[0].format(formatter)
-            + ",effective_date:lte:" + dateRange[1].format(formatter);
+            + ",effective_date:gte:" + fromDate.format(formatter)
+            + ",effective_date:lte:" + transactionDate.format(formatter);
 
         logger.info("Fields: "+ fields);
         logger.info("Filter: "+ filter);
@@ -76,39 +74,6 @@ public class FiscalDataService {
 
 
         return new BigDecimal(0);
-    }
-
-    // We require a 6 month range to search for dates that 
-    // will likely have our date require exchange rate
-    private static LocalDate[] getDateRange(LocalDate transactionDate) {
-        
-        // Get current date for comparisions
-        LocalDate currentDate = LocalDate.now();
-
-        LocalDate begRange = transactionDate;
-        LocalDate endRange = transactionDate;
-        if (transactionDate.equals(currentDate)) {
-            // If transactionDate is equal to the current date, subtract 6 months from start range
-            begRange = transactionDate.minusMonths(FULL_RANGE);
-            endRange = currentDate;
-        } else if (transactionDate.plusMonths(HALF_RANGE).isAfter(currentDate)) { 
-            // If transactionDate + 3 months is after the current date, set the range accordingly
-            begRange = currentDate.minusMonths(FULL_RANGE);
-            endRange = currentDate;
-        } else {
-            // set the range to 3 months before and 3 months after transactionDate
-            begRange = transactionDate.minusMonths(HALF_RANGE);
-            endRange = transactionDate.plusMonths(HALF_RANGE);
-        }
-
-        // put the dates in the array
-        LocalDate[] dateRange = { begRange, endRange };
-
-        logger.info("TranDate: " + transactionDate);
-        logger.info("BegDate: " + begRange.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        logger.info("EndDate: " + endRange.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-        return dateRange;
     }
 
     // Find the appropriate current rate record and return the current rate.
