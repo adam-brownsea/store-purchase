@@ -6,6 +6,8 @@ import spock.lang.Specification
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
+// These tests could be changed to use stubs and mocks as 
+// needs internet connection to test getRate
 class FiscalDataServiceTest extends Specification {
 
     def fiscalDataService = new FiscalDataService()
@@ -17,7 +19,7 @@ class FiscalDataServiceTest extends Specification {
         given: "we set currency to Aust"
         def currency = "Australia-Dollar"
         and: "we set the date to a valid date"
-        def tranDate = LocalDate.parse("2023-05-01", "yyyy-MM-dd")
+        def tranDate = LocalDate.parse("2023-05-01")
         
         when: "we request a conversion rate"
         def exchangeRate = fiscalDataService.getRate(currency, tranDate);
@@ -31,7 +33,7 @@ class FiscalDataServiceTest extends Specification {
         given: "we set the currency to Aust"
         def currency = "Australia-Dollar"
         and: "we set the date to 50 year old date"
-        def tranDate = LocalDate.parse("1973-05-01", "yyyy-MM-dd")
+        def tranDate = LocalDate.parse("1973-05-01")
 
         when: "we request a conversion rate"
         def exchangeRate = fiscalDataService.getRate(currency, tranDate);
@@ -46,7 +48,7 @@ class FiscalDataServiceTest extends Specification {
         given: "we set the currency to Aust"
         def currency = "Australia-Dollar"
         and: "we set the date to recent but old date"
-        def tranDate = LocalDate.parse("1973-05-01", "yyyy-MM-dd")
+        def tranDate = LocalDate.parse("1973-05-01")
 
         when: "we request a conversion rate"
         def exchangeRate = fiscalDataService.getRate(currency, tranDate);
@@ -113,11 +115,11 @@ class FiscalDataServiceTest extends Specification {
         currencyRates.add(currencyRate2)
         
         and: "we set the transaction date to a valid date"
-        def tranDate = LocalDate.parse("2023-04-01", "yyyy-MM-dd")
+        def tranDate = LocalDate.parse("2023-04-01")
 
         when: "we request a conversion rate"
         def result = fiscalDataService.findCurrencyRate(currencyRates, tranDate)
-        def effectiveDate = LocalDate.parse(result.getEffectiveDate(), "yyyy-MM-dd")
+        def effectiveDate = LocalDate.parse(result.getEffectiveDate())
 
         then: "we receive 1 currency rate"
         and: "a effective date less than tran date"
@@ -129,7 +131,7 @@ class FiscalDataServiceTest extends Specification {
         given: "we have a null array"
         def currencyRates = new ArrayList<CurrencyRate>()
         and: "we set the transaction date to a valid date"
-        def tranDate = LocalDate.parse("2023-04-01", "yyyy-MM-dd")
+        def tranDate = LocalDate.parse("2023-04-01")
 
         when: "we request a conversion rate"
         def result = fiscalDataService.findCurrencyRate(currencyRates, tranDate)
@@ -148,7 +150,7 @@ class FiscalDataServiceTest extends Specification {
         currencyRates.add(currencyRate2)
         
         and: "we set the transaction date to a valid date in the past"
-        def tranDate = LocalDate.parse("2020-04-01", "yyyy-MM-dd")
+        def tranDate = LocalDate.parse("2020-04-01")
 
         when: "we request a conversion rate"
         def result = fiscalDataService.findCurrencyRate(currencyRates, tranDate)

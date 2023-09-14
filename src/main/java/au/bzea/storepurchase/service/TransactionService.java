@@ -6,10 +6,13 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import au.bzea.storepurchase.model.RequestTransaction;
 import au.bzea.storepurchase.model.Transaction;
 import au.bzea.storepurchase.repository.TransactionRepository;
 
+@Service
 public class TransactionService {
     private static Logger logger = Logger.getLogger(TransactionService.class.getName());
 
@@ -52,7 +55,4 @@ public class TransactionService {
 			return new Transaction();
 		}
     }
-
-
-
 }
