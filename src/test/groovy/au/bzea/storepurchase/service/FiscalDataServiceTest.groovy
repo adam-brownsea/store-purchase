@@ -51,8 +51,8 @@ class FiscalDataServiceTest extends Specification {
         when: "we request a conversion rate"
         def exchangeRate = fiscalDataService.getRate(currency, tranDate);
 
-        then: "we recieve a exchange rate not found error"
-        false
+        then: "we recieve no exchange rate"
+        exchangeRate == 0
     }
 
 
@@ -126,17 +126,34 @@ class FiscalDataServiceTest extends Specification {
     
     //TODO 
     def "returns null when passed null array to find currency rate "() {
-        given: ""
-        when: ""
-        then:""
-        false
+        given: "we have a null array"
+        def currencyRates = new ArrayList<CurrencyRate>()
+        and: "we set the transaction date to a valid date"
+        def tranDate = LocalDate.parse("2023-04-01", "yyyy-MM-dd")
+
+        when: "we request a conversion rate"
+        def result = fiscalDataService.findCurrencyRate(currencyRates, tranDate)
+
+        then:"we a null response"
+        result == null
     }
 
     //TODO 
     def "returns null when cant find date in array to find currency rate"() {
-        given: ""
-        when: ""
-        then:""
-        false
+        given: "we set and array of currency rates"
+        def currencyRates = new ArrayList<CurrencyRate>()
+        def currencyRate1 = new CurrencyRate("Australia-Dollar", "1.494", "2023-03-31")
+        currencyRates.add(currencyRate1)
+        def currencyRate2 = new CurrencyRate("Australia-Dollar", "1.471", "2022-12-31")
+        currencyRates.add(currencyRate2)
+        
+        and: "we set the transaction date to a valid date in the past"
+        def tranDate = LocalDate.parse("2020-04-01", "yyyy-MM-dd")
+
+        when: "we request a conversion rate"
+        def result = fiscalDataService.findCurrencyRate(currencyRates, tranDate)
+
+        then:"we a null response"
+        result == null
     }
 }
