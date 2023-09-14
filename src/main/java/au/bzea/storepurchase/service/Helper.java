@@ -8,8 +8,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
-import au.bzea.storepurchase.controller.StorePurchaseController;
-
 public class Helper {
     private static Logger logger = Logger.getLogger(Helper.class.getName());
 

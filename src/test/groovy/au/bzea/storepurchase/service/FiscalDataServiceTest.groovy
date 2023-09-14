@@ -43,7 +43,6 @@ class FiscalDataServiceTest extends Specification {
         exchangeRate == 0
     }
 
-    // Mock/Stub
     def "exchange rate can't be found as dates after tran date"() {
         given: "we set the currency to Aust"
         def currency = "Australia-Dollar"
@@ -126,7 +125,6 @@ class FiscalDataServiceTest extends Specification {
         !effectiveDate.isAfter(tranDate)
     }
     
-    //TODO 
     def "returns null when passed null array to find currency rate "() {
         given: "we have a null array"
         def currencyRates = new ArrayList<CurrencyRate>()
@@ -140,7 +138,6 @@ class FiscalDataServiceTest extends Specification {
         result == null
     }
 
-    //TODO 
     def "returns null when cant find date in array to find currency rate"() {
         given: "we set and array of currency rates"
         def currencyRates = new ArrayList<CurrencyRate>()

@@ -1,10 +1,6 @@
 package au.bzea.storepurchase.model;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
